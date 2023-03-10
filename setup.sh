@@ -55,7 +55,7 @@ openssl req \
   -x509 \
   -days 365 \
   -out init/guacamole.crt \
-  -subj "/C=US/ST=CA/L=Anytown/O=Ridgecrest First Aid/OU=AED Instructors/CN=guacamole.adactim.local"
+  -subj "/C=TN/ST=ARIANA/L=TechnoparkELGHAZELA/O=ADACTIM First Aid/OU=SMSI/CN=guacamole.adactim.local"
 
 # values pulled from server.xml within the image, and errors from the docker log
 keytool -genkey \
@@ -64,7 +64,7 @@ keytool -genkey \
   -keystore init/application.keystore \
   -keysize 2048 \
   -storepass password \
-  -dname "cn=keycloak.adactim.local, ou=AED Instructors, o=Ridgecrest, c=US" \
+  -dname "cn=keycloak.adactim.local, ou=SMSI, o=ADACTIM, c=TN" \
   -keypass password \
   -trustcacerts \
   -validity 365
