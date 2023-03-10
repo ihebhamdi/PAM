@@ -55,7 +55,7 @@ openssl req \
   -x509 \
   -days 365 \
   -out init/guacamole.crt \
-  -subj "/C=TN/ST=ARIANA/L=TechnoparkELGHAZELA/O=ADACTIM First Aid/OU=SMSI/CN=guacamole.adactim.local"
+  -subj "/C=TN/ST=ARIANA/L=TechnoparkELGHAZELA/O=ADACTIM/OU=SMSI/CN=guacamole.adactim.local"
 
 # values pulled from server.xml within the image, and errors from the docker log
 keytool -genkey \
