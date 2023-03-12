@@ -16,14 +16,14 @@ mkdir -p {data/guacamole,data/keycloak,init,openid}
 
 cd openid
 
-wget -nc https://mirrors.ocf.berkeley.edu/apache/guacamole/1.1.0/binary/guacamole-auth-openid-1.1.0.tar.gz
-tar -xf guacamole-auth-openid-1.1.0.tar.gz
-mv guacamole-auth-openid-1.1.0/* .
+wget -nc https://mirrors.ocf.berkeley.edu/apache/guacamole/1.5.0/binary/guacamole-auth-sso-1.5.0.tar.gz
+tar -xf guacamole-auth-sso-1.5.0.tar.gz
+mv guacamole-auth-sso-1.5.0/* .
 cd ..
 
 # create the database initialization script for the guacamole database
 docker run --rm \
-  docker.io/guacamole/guacamole:1.1.0 \
+  docker.io/guacamole/guacamole:1.5.0 \
     /opt/guacamole/bin/initdb.sh --postgres > init/initdb.sql.orig
 
 cp init/initdb.sql.orig init/initdb.sql
@@ -33,7 +33,7 @@ patch init/initdb.sql < config/guacamole/1.add-guacadmin-email.patch
 # get the original server.xml
 touch init/server.xml.orig
 docker run --rm --name guacamole-setup \
-  docker.io/guacamole/guacamole:1.1.0 \
+  docker.io/guacamole/guacamole:1.5.0 \
   cat /usr/local/tomcat/conf/server.xml > init/server.xml.orig
 
 # make a copy to patch
@@ -82,7 +82,7 @@ keytool -exportcert \
 # as we don't link to postgres
 touch init/cacerts
 timeout 10 docker run --rm --name keycloak-cacerts \
-  docker.io/jboss/keycloak:latest &
+  quay.io/keycloak/keycloak:20.0.0 &
 sleep 1s
 docker cp keycloak-cacerts:/etc/pki/ca-trust/extracted/java/cacerts init/cacerts
 
