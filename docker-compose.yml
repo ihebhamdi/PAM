@@ -2,7 +2,7 @@ version: '3'
 
 services:
   postgres:
-    image: docker.io/postgres:9.6
+    image: docker.io/postgres:14.2
     restart: always
     volumes:
       - ./init/initdb.sql:/docker-entrypoint-initdb.d/initdb.sql
@@ -21,7 +21,7 @@ services:
     image: docker.io/guacamole/guacamole:1.1.0
     restart: always
     ports:
-      - "6443:8443"
+      - "6443:8080"
     hostname: guacamole.adactim.local
     volumes:
       - ./init/guacamole.crt:/usr/local/tomcat/conf/guacamole.crt
@@ -36,15 +36,15 @@ services:
       GUACD_PORT_4822_TCP_ADDR: guacd
       GUACD_PORT_4822_TCP_PORT: 4822
       GUACD_HOSTNAME: guacd
-      GUACAMOLE_HOSTNAME: https://guacamole:8443/guacamole/#
-      # https://keycloak.adactim.local:8443/auth/realms/master/.well-known/openid-configuration
+      GUACAMOLE_HOSTNAME: https://guacamole:8080/guacamole/#
+      # https://keycloak.adactim.local:8080/auth/realms/master/.well-known/openid-configuration
       # https://guacamole.apache.org/doc/gug/openid-auth.html
-      OPENID_AUTHORIZATION_ENDPOINT: https://keycloak.adactim.local:8443/auth/realms/master/protocol/openid-connect/auth
-      OPENID_JWKS_ENDPOINT: https://keycloak.adactim.local:8443/auth/realms/master/protocol/openid-connect/certs
-      OPENID_ISSUER: https://keycloak.adactim.local:8443/auth/realms/master
+      OPENID_AUTHORIZATION_ENDPOINT: https://keycloak.adactim.local:8080/auth/realms/master/protocol/openid-connect/auth
+      OPENID_JWKS_ENDPOINT: https://keycloak.adactim.local:8080/auth/realms/master/protocol/openid-connect/certs
+      OPENID_ISSUER: https://keycloak.adactim.local:8080/auth/realms/master
       OPENID_CLIENT_ID: guacamole
-      OPENID_REDIRECT_URI: https://guacamole.adactim.local:8443/guacamole/#/settings/sessions
-      OPENID_REDIRECT_URI: https://guacamole.adactim.local:8443/guacamole
+      OPENID_REDIRECT_URI: https://guacamole.adactim.local:8080/guacamole/#/settings/sessions
+      OPENID_REDIRECT_URI: https://guacamole.adactim.local:8080/guacamole
       OPENID_CLAIM_TYPE: sub
       # OPENID_CLAIM_TYPE: preferred_username
       OPENID_SCOPE: openid profile
@@ -59,14 +59,14 @@ services:
     image: docker.io/haproxy:2.1
     restart: always
     ports:
-      - "8443:8443"
+      - "8080:8080"
     volumes:
         - ./config/haproxy/haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro
     depends_on:
       - guacamole
       - keycloak
   keycloakpostgres:
-    image: docker.io/postgres:9.6
+    image: docker.io/postgres:14.2
     restart: always
     volumes:
       - ./data/keycloak:/var/lib/postgresql/data
@@ -74,8 +74,10 @@ services:
       POSTGRES_USER: keycloak
       POSTGRES_PASSWORD: keycloak
       POSTGRES_DB: keycloak
+    ports:
+      - "5436:5432"
   keycloak:
-    image: docker.io/jboss/keycloak:latest
+    image: quay.io/keycloak/keycloak:20.0.0
     restart: always
     depends_on:
       - keycloakpostgres
@@ -91,7 +93,8 @@ services:
       - KEYCLOAK_USER='admin'
     hostname: keycloak.adactim.local
     ports:
-      - "7443:8443"
+      - "8890:8080"
+      - "8843:8443"
     tmpfs:
       - /run
       - /tmp

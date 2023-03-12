@@ -101,4 +101,3 @@ keytool -importcert \
 
 docker stop keycloak-cacerts
 docker rm keycloak-cacerts
-

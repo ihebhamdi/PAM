@@ -30,7 +30,7 @@ docker exec guacamole-compose_keycloak_1 \
   -s enabled=true \
   -s email=guacadmin@guacadmin \
   -r master \
-  --server https://keycloak.adactim.local:8443/auth \
+  --server https://keycloak.adactim.local:8080/auth \
   --realm master \
   --user admin \
   --password admin
@@ -42,7 +42,7 @@ docker exec guacamole-compose_keycloak_1 \
   --username guacadmin@guacadmin \
   --new-password guacadmin \
   -r master \
-  --server https://keycloak.adactim.local:8443/auth \
+  --server https://keycloak.adactim.local:8080/auth \
   --realm master \
   --user admin \
   --password admin
@@ -54,7 +54,7 @@ docker exec guacamole-compose_keycloak_1 \
   --uusername guacadmin@guacadmin \
   --rolename admin \
   -r master \
-  --server https://keycloak.adactim.local:8443/auth \
+  --server https://keycloak.adactim.local:8080/auth \
   --realm master \
   --user admin \
   --password admin
@@ -69,7 +69,7 @@ docker exec guacamole-compose_keycloak_1 \
   create clients \
   --file guacamole-client.json \
   -r master \
-  --server https://keycloak.adactim.local:8443/auth \
+  --server https://keycloak.adactim.local:8080/auth \
   --realm master \
   --user admin \
   --password admin
@@ -96,9 +96,9 @@ you'll need separate certs for guacamole and keycloak
 
 Then browsed to:
 
-https://guacamole.adactim.local:8443/guacamole
+https://guacamole.adactim.local:8080/guacamole
 
-https://keycloak.adactim.local:8443
+https://keycloak.adactim.local:8080
 
 ### To add users
 
@@ -122,7 +122,7 @@ Reference: https://guacamole.apache.org/doc/gug/openid-auth.html
 
 To add users to postgres, add them through the guacamole application.
 
-https://guacamole.adactim.local:8443/guacamole
+https://guacamole.adactim.local:8080/guacamole
 
 username: *guacadmin@guacadmin*
 
@@ -159,7 +159,7 @@ connection must be checked for the user to create a connection.
 
 #### Adding user to Keycloak
 
-https://keycloak.adactim.local:8443
+https://keycloak.adactim.local:8080
 
 Administration Console
 
